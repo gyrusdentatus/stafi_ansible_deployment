@@ -1,3 +1,6 @@
+## Installs docker in the first part
+## Installs and sets up wireguard in the second part 
+
 ---
     - hosts: all 
       become: yes
@@ -50,10 +53,17 @@
     become_user: root
     
     tasks: 
+    - name: install jq
+      apt:
+        pkg: 
+          - jq
     - name: install wireguard 
       apt:
         pkg: 
           - wireguard
+          - wireguard-dkms
+          - wireguard-tools
+          - linux-headers-$(uname -r)
     - name: go to wireguard and umask
       shell: cd /etc/wireguard && umask 077
     - name: generate wg keys
