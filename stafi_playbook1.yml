@@ -48,25 +48,20 @@
       - name: test if docker is installed and ubuntu can run it w/o sudo babyyy
         shell: docker ps 
 
-    hosts: all 
-    become: yes
-    become_user: root
-    
-    tasks: 
-    - name: install jq
-      apt:
-        pkg: 
-          - jq
-    - name: install wireguard 
-      apt:
-        pkg: 
-          - wireguard
-          - wireguard-dkms
-          - wireguard-tools
-          - linux-headers-$(uname -r)
-    - name: go to wireguard and umask
-      shell: cd /etc/wireguard && umask 077
-    - name: generate wg keys
-      shell: wg genkey | sudo tee privatekey | wg pubkey | sudo tee publickey
-    - name: output wireguard keys to stdout 
-      shell: cat publickey && echo " = publickey" && cat privatekey && echo " = privatekey "
+      - name: install jq
+        apt:
+          pkg: 
+            - jq
+      - name: install wireguard 
+        apt:
+          pkg: 
+            - wireguard
+            - wireguard-dkms
+            - wireguard-tools
+            - linux-headers-$(uname -r)
+      - name: go to wireguard and umask
+        shell: cd /etc/wireguard && umask 077
+      - name: generate wg keys
+        shell: wg genkey | sudo tee privatekey | wg pubkey | sudo tee publickey
+      - name: output wireguard keys to stdout 
+        shell: cat publickey && echo " = publickey" && cat privatekey && echo " = privatekey "
