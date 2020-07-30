@@ -1,0 +1,23 @@
+---
+  - hosts: all 
+    become: yes
+    become_user: root
+        #  ansible_become_pass: 
+    tasks:
+    - name: install jq
+      apt:
+        pkg: 
+        - jq
+    - name: install wireguard 
+      apt:
+        pkg: 
+          - wireguard
+          - wireguard-dkms
+          - wireguard-tools
+          - linux-headers-generic
+    - name: go to wireguard and umask
+      shell: cd /etc/wireguard && umask 077
+    - name: generate wg keys
+      shell: cd /etc/wireguard/ && wg genkey | tee privatekey | wg pubkey | tee publickey
+    - name: output wireguard keys to stdout 
+      shell: cd /etc/wireguard && cat publickey && echo " = publickey" && cat privatekey && echo " = privatekey "
