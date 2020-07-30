@@ -19,6 +19,7 @@
         printf '%s\n' "ListenPort = 51820" >> /etc/wireguard/wg0.conf
         printf '%s\n' "PrivateKey = ${privkey}" >> /etc/wireguard/wg0.conf
         printf '%s\n' "" >> /etc/wireguard/wg0.conf
+        printf '%s\n' "[Peer]" >> /etc/wireguard/wg0.conf
         printf '%s\n' "PublicKey = ${validator_pubkey}" >> /etc/wireguard/wg0.conf
         printf '%s\n' "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
         printf '%s\n' "Endpoint = ${validator_ip}:51820" >> /etc/wireguard/wg0.conf
