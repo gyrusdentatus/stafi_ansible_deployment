@@ -1,6 +1,3 @@
-## Installs docker in the first part
-## Installs and sets up wireguard in the second part 
-
 ---
     - hosts: all 
       become: yes
@@ -24,6 +21,7 @@
             - curl 
             - gnupg-agent 
             - software-properties-common 
+            - git
       - name: add Docker repo keys
         shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
       - name: apt-key fingerprint 
@@ -43,25 +41,8 @@
             - containerd.io      
     #  - name: create group Docker
      #   shell: groupadd docker
-      - name: add ubuntu user to group docker
-        shell: usermod -a -G docker ubuntu
-      - name: test if docker is installed and ubuntu can run it w/o sudo babyyy
+     ### optional , let ubuntu user use docker w/o sudo
+     # - name: add ubuntu user to group docker
+     #   shell: usermod -a -G docker ubuntu
+     # - name: test if docker is installed and ubuntu can run it w/o sudo babyyy
         shell: docker ps 
-
-      - name: install jq
-        apt:
-          pkg: 
-            - jq
-      - name: install wireguard 
-        apt:
-          pkg: 
-            - wireguard
-            - wireguard-dkms
-            - wireguard-tools
-            - linux-headers-$(uname -r)
-      - name: go to wireguard and umask
-        shell: cd /etc/wireguard && umask 077
-      - name: generate wg keys
-        shell: wg genkey | sudo tee privatekey | wg pubkey | sudo tee publickey
-      - name: output wireguard keys to stdout 
-        shell: cat publickey && echo " = publickey" && cat privatekey && echo " = privatekey "
